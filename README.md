@@ -1,2 +1,3 @@
-# cartier
-Exploration and interests discovery
+# Cartier
+
+Exploration and interests discovery for Scenic Routes

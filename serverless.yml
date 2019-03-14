@@ -26,6 +26,10 @@ provider:
       Action:
         - 'lambda:*'
       Resource: '*'
+    - Effect: 'Allow'
+      Action:
+        - 'dynamodb:*'
+      Resource: '*'
 functions:
   scheduler:
     handler: build/scheduler.main
@@ -33,7 +37,11 @@ functions:
       - schedule:
           name: scheduler-event
           description: 'Event to fire the scheduler service'
-          rate: rate(2 minutes)
+          rate: rate(60 minutes)
+
+resources:
+  - ${file(config/dynamodb-job.json)}
+  - ${file(config/dynamodb-area.json)}
 
 plugins:
   - serverless-prune-plugin

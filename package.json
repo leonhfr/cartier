@@ -25,7 +25,7 @@
   },
   "license": "GPL-3.0-only",
   "dependencies": {
-    "@scenicroutes/eratosthenes": "^0.0.0",
+    "@scenicroutes/eratosthenes": "0.0.1",
     "@turf/turf": "^5.1.6",
     "aws-sdk": "^2.420.0",
     "debug": "^4.0.1",

@@ -1,0 +1,49 @@
+service: cartier
+
+frameworkVersion: '>=1.0.0 <2.0.0'
+
+custom:
+  account: ${opt:account}
+  debug: ${opt:debug}
+  region: ${opt:region}
+  timeout: ${opt:timeout}
+  prune:
+    automatic: true
+    number: 3
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: ${self:custom.region}
+  timeout: ${self:custom.timeout}
+  memorySize: 512
+  logRetentionInDays: 7
+  environment:
+    ACCOUNT: ${self:custom.account}
+    DEBUG: ${self:custom.debug}
+    TIMEOUT: ${self:custom.timeout}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - 'lambda:*'
+      Resource: '*'
+functions:
+  scheduler:
+    handler: build/scheduler.main
+    events:
+      - schedule:
+          name: scheduler-event
+          description: 'Event to fire the scheduler service'
+          rate: rate(2 minutes)
+
+plugins:
+  - serverless-prune-plugin
+
+package:
+  exclude:
+    - src/**
+    - config/**
+    - coverage/**
+    - docs/**
+    - build/**/*.d.ts
+    - build/**/*.test.js
+    - build/scripts/**

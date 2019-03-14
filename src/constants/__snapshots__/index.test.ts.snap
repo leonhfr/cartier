@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`index should expose the expected entries 1`] = `
+Object {
+  "BATCH_PRECISION": 100,
+  "FLICKR_API_LIMIT_PER_HOUR": 3000,
+}
+`;

@@ -2,7 +2,7 @@
 
 exports[`index should expose the expected entries 1`] = `
 Object {
-  "BATCH_PRECISION": 100,
+  "BATCH_PRECISION": 2,
   "FLICKR_API_LIMIT_PER_HOUR": 3000,
 }
 `;

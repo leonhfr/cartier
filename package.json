@@ -1,0 +1,82 @@
+{
+  "name": "@scenicroutes/cartier",
+  "version": "0.0.0",
+  "description": "Cartier: Exploration and interests discovery for Scenic Routes",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf build",
+    "deploy": "npm run clean && npm run build && serverless deploy",
+    "sls": "npx serverless",
+    "ci": "jest --ci none --testPathPattern='src/' --detectOpenHandles --forceExit true --maxWorkers 2 --collectCoverage",
+    "pretest": "tsc -p tsconfig.test.json",
+    "test": "jest src --collectCoverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scenicroutes/cartier,git"
+  },
+  "bugs": {
+    "url": "https://github.com/scenicroutes/cartier/issues"
+  },
+  "homepage": "https://github.com/scenicroutes/cartier#readme",
+  "author": {
+    "name": "Leon Hollender",
+    "email": "hello@leonh.fr"
+  },
+  "license": "GPL-3.0-only",
+  "dependencies": {
+    "@scenicroutes/eratosthenes": "^0.0.0",
+    "@turf/turf": "^5.1.6",
+    "aws-sdk": "^2.420.0",
+    "debug": "^4.0.1",
+    "decimal.js": "^10.1.1",
+    "lodash": "^4.17.11",
+    "tslib": "^1.9.3"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.17",
+    "@types/debug": "0.0.31",
+    "@types/jest": "^23.3.12",
+    "@types/lodash": "^4.14.119",
+    "@types/node": "^10.12.0",
+    "jest": "^23.6.0",
+    "jest-junit": "^5.2.0",
+    "prettier": "^1.15.3",
+    "rimraf": "^2.6.2",
+    "serverless-prune-plugin": "^1.3.2",
+    "ts-jest": "^23.10.5",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.2"
+  },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/build/",
+      "<rootDir>/node_modules/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    },
+    "reporters": [
+      "jest-junit"
+    ]
+  }
+}

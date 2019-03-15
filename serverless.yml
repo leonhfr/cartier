@@ -5,6 +5,7 @@ frameworkVersion: '>=1.0.0 <2.0.0'
 custom:
   account: ${opt:account}
   region: ${opt:region}
+  bucket: ${opt:bucket}
   timeout: ${opt:timeout}
   rate: ${opt:rate}
   debug: ${opt:debug}
@@ -20,6 +21,7 @@ provider:
   logRetentionInDays: 7
   environment:
     ACCOUNT: ${self:custom.account}
+    BUCKET: ${self:custom.bucket}
     TIMEOUT: ${self:custom.timeout}
     RATE: ${self:custom.rate}
     DEBUG: ${self:custom.debug}
@@ -32,6 +34,11 @@ provider:
       Action:
         - 'dynamodb:*'
       Resource: '*'
+    - Effect: 'Allow'
+      Action:
+        - 's3:*'
+      Resource:
+        - arn:aws:s3:::scenicroutes-*
 functions:
   scheduler:
     handler: build/scheduler.main

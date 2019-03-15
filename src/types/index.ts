@@ -1,3 +1,6 @@
+// Packages.
+import * as turf from '@turf/turf';
+
 // Definition.
 export type Result<T, E> = {
   readonly ok: T;
@@ -9,6 +12,10 @@ export type Area = {
   readonly name: string;
   readonly file: string;
   readonly enabled: boolean;
-  readonly zonesComputed: boolean;
   readonly lastScheduledAt: number;
+};
+
+export type Zone = {
+  bbox: turf.helpers.BBox;
+  zone: turf.helpers.Feature<turf.helpers.Polygon>;
 };

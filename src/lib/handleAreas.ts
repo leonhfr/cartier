@@ -2,38 +2,56 @@
 import * as AWS from 'aws-sdk';
 import * as debug from 'debug';
 import { DynamoDbDriver } from '@scenicroutes/eratosthenes';
+// import * as turf from '@turf/turf';
 
 // Internal.
+import { AREA_REFRESH_RATE } from '../constants';
+import { generateZones } from './generateZones';
 import * as Types from '../types';
 
 // Code.
-const debugVerbose = debug('cartier:verbose:scheduler');
+// const debugError = debug('cartier:error:handleAreas');
+const debugVerbose = debug('cartier:verbose:handleAreas');
 
-// ignoring while it is in development
-// TODO: remove ignore
-/* istanbul ignore next */
 export const handleAreas = async (
   jobsRemaining: number
 ): Promise<{ jobsSent: number; jobsScheduled: number }> => {
   debugVerbose(`jobsRemaining: %j`, jobsRemaining);
+
   // Retrieve areas from DynamoDB
-  const request: AWS.DynamoDB.DocumentClient.ScanInput = {
+  const scanRequest: AWS.DynamoDB.DocumentClient.ScanInput = {
     TableName: 'area',
   };
-  const response = await DynamoDbDriver.scan<Types.Area>(request);
-  debugVerbose(`scan response: %j`, response);
 
-  // If last update time > 24h, run jobs
-  // If never updated, generate divided areas and store to s3
-  // update dynamo
-  // retrieve divided area from s3
+  const scanResponse = await DynamoDbDriver.scan<Types.Area>(scanRequest);
+  debugVerbose(`scan response: %j`, scanResponse);
 
-  // If only one page, handled directly by consumer
+  if (!scanResponse.Items) {
+    return { jobsSent: 0, jobsScheduled: 0 };
+  }
 
-  // Never do the last page
+  const now = Date.now();
+
+  // If last update time > AREA_REFRESH_RATE, schedule area
+  const areas = scanResponse.Items.filter(
+    area => now - area.lastScheduledAt > AREA_REFRESH_RATE
+  );
+  debugVerbose(`areas to schedule: %j`, areas);
+
+  if (!areas.length) {
+    return { jobsSent: 0, jobsScheduled: 0 };
+  }
+
+  const dividedAreas = await Promise.all(
+    areas.map(async area => await generateZones(area))
+  );
+  debugVerbose(`divided areas: %j`, dividedAreas);
+
+  // update dynamo db for date (not for nulls)
 
   // Request to know the number of pages and send jobs
-  // Only send number of jobs allowed per hour (flickr requests)
+  // If only one page, handled directly by consumer
+  // Actually save requests by always using first page
 
   // Store any excess to dynamodb
   return { jobsSent: 0, jobsScheduled: 0 };

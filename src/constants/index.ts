@@ -8,4 +8,4 @@ export const AREA_REFRESH_RATE = 24 * 60 * 60;
 export const ZONE_SUFFIX = 'zone';
 
 // Flickr Constants
-export const FLICKR_API_LIMIT_PER_HOUR = 3500;
+export const FLICKR_API_LIMIT = 3500;

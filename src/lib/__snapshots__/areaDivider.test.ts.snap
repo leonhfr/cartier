@@ -1,5 +1,124 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`areaDivider should return the expected output - default precision 1`] = `
+Array [
+  Object {
+    "geometry": Object {
+      "coordinates": Array [
+        Array [
+          Array [
+            2.15,
+            41.41290694112838,
+          ],
+          Array [
+            2.149608,
+            41.413139,
+          ],
+          Array [
+            2.149994,
+            41.413638,
+          ],
+          Array [
+            2.149651,
+            41.414394,
+          ],
+          Array [
+            2.148492,
+            41.41425,
+          ],
+          Array [
+            2.147698,
+            41.414652,
+          ],
+          Array [
+            2.148707,
+            41.416679,
+          ],
+          Array [
+            2.15,
+            41.41684305806452,
+          ],
+          Array [
+            2.15,
+            41.41290694112838,
+          ],
+        ],
+      ],
+      "type": "Polygon",
+    },
+    "properties": Object {},
+    "type": "Feature",
+  },
+  Object {
+    "geometry": Object {
+      "coordinates": Array [
+        Array [
+          Array [
+            2.15,
+            41.41684305806452,
+          ],
+          Array [
+            2.150102,
+            41.416856,
+          ],
+          Array [
+            2.152913,
+            41.416728,
+          ],
+          Array [
+            2.154672,
+            41.415199,
+          ],
+          Array [
+            2.155337,
+            41.414829,
+          ],
+          Array [
+            2.154543,
+            41.413236,
+          ],
+          Array [
+            2.153771,
+            41.413912,
+          ],
+          Array [
+            2.15214,
+            41.412817,
+          ],
+          Array [
+            2.152419,
+            41.412254,
+          ],
+          Array [
+            2.15081,
+            41.41161,
+          ],
+          Array [
+            2.150402,
+            41.412158,
+          ],
+          Array [
+            2.150831,
+            41.412415,
+          ],
+          Array [
+            2.15,
+            41.41290694112838,
+          ],
+          Array [
+            2.15,
+            41.41684305806452,
+          ],
+        ],
+      ],
+      "type": "Polygon",
+    },
+    "properties": Object {},
+    "type": "Feature",
+  },
+]
+`;
+
 exports[`areaDivider should return the expected output 1`] = `
 Array [
   Object {
@@ -537,125 +656,6 @@ Array [
           Array [
             2.22,
             41.41190340796152,
-          ],
-        ],
-      ],
-      "type": "Polygon",
-    },
-    "properties": Object {},
-    "type": "Feature",
-  },
-]
-`;
-
-exports[`areaDivider should return the expected output 2`] = `
-Array [
-  Object {
-    "geometry": Object {
-      "coordinates": Array [
-        Array [
-          Array [
-            2.15,
-            41.41290694112838,
-          ],
-          Array [
-            2.149608,
-            41.413139,
-          ],
-          Array [
-            2.149994,
-            41.413638,
-          ],
-          Array [
-            2.149651,
-            41.414394,
-          ],
-          Array [
-            2.148492,
-            41.41425,
-          ],
-          Array [
-            2.147698,
-            41.414652,
-          ],
-          Array [
-            2.148707,
-            41.416679,
-          ],
-          Array [
-            2.15,
-            41.41684305806452,
-          ],
-          Array [
-            2.15,
-            41.41290694112838,
-          ],
-        ],
-      ],
-      "type": "Polygon",
-    },
-    "properties": Object {},
-    "type": "Feature",
-  },
-  Object {
-    "geometry": Object {
-      "coordinates": Array [
-        Array [
-          Array [
-            2.15,
-            41.41684305806452,
-          ],
-          Array [
-            2.150102,
-            41.416856,
-          ],
-          Array [
-            2.152913,
-            41.416728,
-          ],
-          Array [
-            2.154672,
-            41.415199,
-          ],
-          Array [
-            2.155337,
-            41.414829,
-          ],
-          Array [
-            2.154543,
-            41.413236,
-          ],
-          Array [
-            2.153771,
-            41.413912,
-          ],
-          Array [
-            2.15214,
-            41.412817,
-          ],
-          Array [
-            2.152419,
-            41.412254,
-          ],
-          Array [
-            2.15081,
-            41.41161,
-          ],
-          Array [
-            2.150402,
-            41.412158,
-          ],
-          Array [
-            2.150831,
-            41.412415,
-          ],
-          Array [
-            2.15,
-            41.41290694112838,
-          ],
-          Array [
-            2.15,
-            41.41684305806452,
           ],
         ],
       ],

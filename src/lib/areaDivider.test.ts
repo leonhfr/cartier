@@ -10,8 +10,7 @@ describe('areaDivider', () => {
   it('should return the expected output', () => {
     expect(areaDivider(Mocks.area1, 0.01)).toMatchSnapshot();
   });
-  it('should return the expected output', () => {
+  it('should return the expected output - default precision', () => {
     expect(areaDivider(Mocks.area2)).toMatchSnapshot();
   });
-  it('should be safe with the decimals', () => {});
 });

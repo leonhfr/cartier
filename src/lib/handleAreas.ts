@@ -1,7 +1,7 @@
 // Packages.
 import * as AWS from 'aws-sdk';
 import * as debug from 'debug';
-import { drivers } from '@scenicroutes/eratosthenes';
+import { DynamoDbDriver } from '@scenicroutes/eratosthenes';
 
 // Internal.
 import * as Types from '../types';
@@ -9,6 +9,9 @@ import * as Types from '../types';
 // Code.
 const debugVerbose = debug('cartier:verbose:scheduler');
 
+// ignoring while it is in development
+// TODO: remove ignore
+/* istanbul ignore next */
 export const handleAreas = async (
   jobsRemaining: number
 ): Promise<{ jobsSent: number; jobsScheduled: number }> => {
@@ -17,7 +20,7 @@ export const handleAreas = async (
   const request: AWS.DynamoDB.DocumentClient.ScanInput = {
     TableName: 'area',
   };
-  const response = await drivers.DynamoDB.scan<Types.Area>(request);
+  const response = await DynamoDbDriver.scan<Types.Area>(request);
   debugVerbose(`scan response: %j`, response);
 
   // If last update time > 24h, run jobs

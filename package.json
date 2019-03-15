@@ -25,11 +25,10 @@
   },
   "license": "GPL-3.0-only",
   "dependencies": {
-    "@scenicroutes/eratosthenes": "0.0.1",
+    "@scenicroutes/eratosthenes": "0.0.4",
     "@turf/turf": "^5.1.6",
     "aws-sdk": "^2.420.0",
     "debug": "^4.0.1",
-    "decimal.js": "^10.1.1",
     "lodash": "^4.17.11",
     "tslib": "^1.9.3"
   },
@@ -50,7 +49,8 @@
   },
   "jest": {
     "coveragePathIgnorePatterns": [
-      "<rootDir>/node_modules/"
+      "<rootDir>/node_modules/",
+      "<rootDir>/src/mocks"
     ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
@@ -74,9 +74,6 @@
         "lines": 100,
         "statements": 100
       }
-    },
-    "reporters": [
-      "jest-junit"
-    ]
+    }
   }
 }

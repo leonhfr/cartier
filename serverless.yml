@@ -4,9 +4,10 @@ frameworkVersion: '>=1.0.0 <2.0.0'
 
 custom:
   account: ${opt:account}
-  debug: ${opt:debug}
   region: ${opt:region}
   timeout: ${opt:timeout}
+  rate: ${opt:rate}
+  debug: ${opt:debug}
   prune:
     automatic: true
     number: 3
@@ -19,8 +20,9 @@ provider:
   logRetentionInDays: 7
   environment:
     ACCOUNT: ${self:custom.account}
-    DEBUG: ${self:custom.debug}
     TIMEOUT: ${self:custom.timeout}
+    RATE: ${self:custom.rate}
+    DEBUG: ${self:custom.debug}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -37,7 +39,7 @@ functions:
       - schedule:
           name: scheduler-event
           description: 'Event to fire the scheduler service'
-          rate: rate(60 minutes)
+          rate: rate(${self:custom.rate} minutes)
 
 resources:
   - ${file(config/dynamodb-job.json)}

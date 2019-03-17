@@ -23,6 +23,8 @@ export const handleAreas = async (
     TableName: 'area',
   };
 
+  // TODO: scan only for enabled areas
+
   const scanResponse = await DynamoDbDriver.scan<Types.Area>(scanRequest);
   debugVerbose(`scan response: %j`, scanResponse);
 
@@ -45,6 +47,7 @@ export const handleAreas = async (
   const dividedAreas = await Promise.all(
     areas.map(async area => await generateZones(area))
   );
+
   debugVerbose(`divided areas: %j`, dividedAreas);
 
   // update dynamo db for date (not for nulls)

@@ -1,13 +1,9 @@
 // Packages.
-import * as AWS from 'aws-sdk';
+import * as _ from 'lodash';
 import * as debug from 'debug';
-import { DynamoDbDriver } from '@scenicroutes/eratosthenes';
-// import * as turf from '@turf/turf';
+import { Eratosthenes } from '@scenicroutes/eratosthenes';
 
 // Internal.
-import { AREA_REFRESH_RATE } from '../constants';
-import { generateZones } from './generateZones';
-import * as Types from '../types';
 
 // Code.
 // const debugError = debug('cartier:error:handleAreas');
@@ -19,24 +15,19 @@ export const handleAreas = async (
   debugVerbose(`jobsRemaining: %j`, jobsRemaining);
 
   // Retrieve areas from DynamoDB
-  const scanRequest: AWS.DynamoDB.DocumentClient.ScanInput = {
-    TableName: 'area',
-  };
+  const areasList = await Eratosthenes.AreaModel.list();
+  debugVerbose(`scan response: %j`, areasList);
 
-  // TODO: scan only for enabled areas
-
-  const scanResponse = await DynamoDbDriver.scan<Types.Area>(scanRequest);
-  debugVerbose(`scan response: %j`, scanResponse);
-
-  if (!scanResponse.Items) {
-    return { jobsSent: 0, jobsScheduled: 0 };
+  if (areasList instanceof Error) {
+    throw areasList;
   }
 
   const now = Date.now();
 
   // If last update time > AREA_REFRESH_RATE, schedule area
-  const areas = scanResponse.Items.filter(
-    area => now - area.lastScheduledAt > AREA_REFRESH_RATE
+  const areas = _.filter(
+    areasList.ok,
+    area => now - area.lastScheduledAt > area.refreshRate
   );
   debugVerbose(`areas to schedule: %j`, areas);
 
@@ -44,16 +35,14 @@ export const handleAreas = async (
     return { jobsSent: 0, jobsScheduled: 0 };
   }
 
-  const dividedAreas = await Promise.all(
-    areas.map(async area => await generateZones(area))
-  );
-
-  debugVerbose(`divided areas: %j`, dividedAreas);
-
   // update dynamo db for date (not for nulls)
 
   // Request to know the number of pages and send jobs
   // If only one page, handled directly by consumer
+
+  // send all jobs possible to handle zones,
+  // schedule the first zones query that exceeds capacity to dynamodb
+
   // Actually save requests by always using first page
 
   // Store any excess to dynamodb

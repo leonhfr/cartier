@@ -7,6 +7,7 @@ describe('Config', () => {
     expect(Config.account).toBe(0);
     expect(Config.flickrKey).toBe('');
     expect(Config.flickrLimit).toBe(0);
+    expect(Config.rate).toBe(0);
     expect(Config.timeout).toBe(0);
   });
 });

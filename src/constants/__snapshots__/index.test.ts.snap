@@ -2,9 +2,6 @@
 
 exports[`index should expose the expected entries 1`] = `
 Object {
-  "AREA_REFRESH_RATE": 86400,
-  "FLICKR_API_LIMIT": 3500,
-  "GEOJSON_ZONES_DEFAULT_PRECISION": 0.02,
-  "ZONE_SUFFIX": "zone",
+  "FLICKR_API_LIMIT": 100,
 }
 `;

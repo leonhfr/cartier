@@ -9,6 +9,9 @@ export default class Config {
   static get flickrLimit(): number {
     return Number(process.env.FLICKRLIMIT) || 0;
   }
+  static get rate(): number {
+    return Number(process.env.RATE) || 0;
+  }
   static get timeout(): number {
     return Number(process.env.TIMEOUT) || 0;
   }

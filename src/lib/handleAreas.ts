@@ -24,10 +24,12 @@ export const handleAreas = async (
 
   const now = Date.now();
 
-  // If last update time > AREA_REFRESH_RATE, schedule area
   const areas = _.filter(
     areasList.ok,
-    area => now - area.lastScheduledAt > area.refreshRate
+    area =>
+      area.enabled &&
+      area.zonesComputed &&
+      now - area.lastScheduledAt > area.refreshRate
   );
   debugVerbose(`areas to schedule: %j`, areas);
 

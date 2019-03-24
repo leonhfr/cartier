@@ -3,9 +3,10 @@ import * as AWSLambda from 'aws-lambda';
 import * as debug from 'debug';
 
 // Internal.
+import Config from './lib/Config';
 import { FLICKR_API_LIMIT } from './constants';
 import { handleAreas } from './lib/handleAreas';
-import { handlePendingJobs } from './lib/handlePendingJobs';
+import { schedulePendingJobs } from './lib/schedulePendingJobs';
 
 // Code.
 const debugError = debug('cartier:error:scheduler');
@@ -20,17 +21,19 @@ export const main = async (
     debugVerbose(`event: %j`, event);
     debugVerbose(`context: %j`, context);
 
-    // Lambda executed every hour (RATE), throttling to avoid exceeding the API limit
-    let jobsRemaining = FLICKR_API_LIMIT;
-    debugVerbose(`API limit: %d jobs`, jobsRemaining);
+    // Lambda executed every (RATE), throttling to avoid exceeding the API limit
+    const maximumJobs = Config.flickrLimit || FLICKR_API_LIMIT;
+
+    debugVerbose(`API limit: %d jobs`, maximumJobs);
 
     // If there are pending jobs, we schedule them first
-    const pendingJobsScheduled = await handlePendingJobs(jobsRemaining);
-    jobsRemaining -= pendingJobsScheduled;
+    const pendingJobsScheduled = await schedulePendingJobs(maximumJobs);
     debugVerbose(`%d pending jobs sent`, pendingJobsScheduled);
 
     // Otherwise, proceed to handling the areas
-    const { jobsSent, jobsScheduled } = await handleAreas(jobsRemaining);
+    const { jobsSent, jobsScheduled } = await handleAreas(
+      maximumJobs - pendingJobsScheduled
+    );
     debugVerbose(
       `%d jobs sent, %d pending jobs scheduled`,
       jobsSent,

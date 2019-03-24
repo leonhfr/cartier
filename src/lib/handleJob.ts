@@ -1,15 +1,14 @@
 // Packages.
 import * as debug from 'debug';
 import { Flickr } from '@scenicroutes/davinci';
-// import { Eratosthenes } from '@scenicroutes/eratosthenes';
 import * as Wittgenstein from '@scenicroutes/wittgenstein';
 
 // Internal.
 import Config from './Config';
+import { handlePhotos } from './handlePhotos';
 import * as Types from '../types';
 
 // Code.
-// const debugError = debug('cartier:error:handleJob');
 const debugVerbose = debug('cartier:verbose:handleJob');
 
 export const handleJob = async (job: Wittgenstein.Job) => {
@@ -42,7 +41,8 @@ export const handleJob = async (job: Wittgenstein.Job) => {
 
   const { page, pages, photo, total } = flickrResponse;
 
-  // TODO: handle photos
+  // Putting all photos to DynamoDB
+  await handlePhotos(photo, job.zone);
 
   // We return the number of pages
   // That way we can use it to schedule further jobs

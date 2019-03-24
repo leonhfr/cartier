@@ -49,6 +49,15 @@ functions:
           name: scheduler-event
           description: 'Event to fire the scheduler service'
           rate: rate(${self:custom.rate} minutes)
+  consumer:
+    handler: build/consumer.main
+    events:
+      - sqs:
+          arn: arn:aws:sqs:${self:custom.region}:${self:custom.account}:job-scheduling
+          batchSize: 10
+
+resources:
+  - ${file(config/sqs-job.json)}
 
 plugins:
   - serverless-prune-plugin

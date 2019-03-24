@@ -2,18 +2,15 @@
 import * as _ from 'lodash';
 import * as debug from 'debug';
 import { Eratosthenes } from '@scenicroutes/eratosthenes';
+import * as Wittgenstein from '@scenicroutes/wittgenstein';
 
 // Internal.
 
 // Code.
-// const debugError = debug('cartier:error:handleAreas');
-const debugVerbose = debug('cartier:verbose:handleAreas');
+const debugError = debug('cartier:error:fetchAreas');
+const debugVerbose = debug('cartier:verbose:fetchAreas');
 
-export const handleAreas = async (
-  jobsRemaining: number
-): Promise<{ jobsSent: number; jobsScheduled: number }> => {
-  debugVerbose(`jobsRemaining: %j`, jobsRemaining);
-
+export const fetchAreas = async (): Promise<Array<Wittgenstein.Area>> => {
   // Retrieve areas from DynamoDB
   const areasList = await Eratosthenes.AreaModel.list();
 
@@ -33,10 +30,14 @@ export const handleAreas = async (
       now - area.lastScheduledAt > area.refreshRate
   );
 
+  areasList.err.forEach(err => {
+    debugError(`error with area: %o`, err);
+  });
+
   debugVerbose(`areas to schedule: %j`, areas);
 
   if (!areas.length) {
-    return { jobsSent: 0, jobsScheduled: 0 };
+    return [];
   }
 
   // Updating last scheduling time on DynamoDB
@@ -44,14 +45,5 @@ export const handleAreas = async (
     areas.map(area => Eratosthenes.AreaModel.updateItem(area.id, now))
   );
 
-  // Get zones from DynamoDB
-  // const zones
-
-  // Send first jobs remaining zones to job scheduler and await response
-
-  // Send the others as jobs with page 0
-
-  // Send the responses
-
-  return { jobsSent: 0, jobsScheduled: 0 };
+  return areas;
 };

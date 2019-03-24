@@ -24,7 +24,3 @@ jobs:
           paths:
             - ./node_modules
       - run: npm run ci
-      - store_artifacts:
-          path: reports/junit
-      - store_test_results:
-          path: reports/junit

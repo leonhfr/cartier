@@ -25,8 +25,11 @@
   },
   "license": "GPL-3.0-only",
   "dependencies": {
-    "@scenicroutes/eratosthenes": "0.0.6",
-    "@turf/turf": "^5.1.6",
+    "@scenicroutes/davinci": "0.0.2",
+    "@scenicroutes/eratosthenes": "0.0.14",
+    "@scenicroutes/wittgenstein": "0.0.6",
+    "@turf/boolean-point-in-polygon": "^6.0.1",
+    "@turf/helpers": "^6.1.4",
     "aws-sdk": "^2.420.0",
     "debug": "^4.0.1",
     "lodash": "^4.17.11",
@@ -36,7 +39,7 @@
     "@types/aws-lambda": "^8.10.17",
     "@types/debug": "0.0.31",
     "@types/jest": "^23.3.12",
-    "@types/lodash": "^4.14.119",
+    "@types/lodash": "^4.14.123",
     "@types/node": "^10.12.0",
     "jest": "^23.6.0",
     "prettier": "^1.15.3",
@@ -68,10 +71,10 @@
     ],
     "coverageThreshold": {
       "global": {
-        "branches": 68.42,
+        "branches": 63.16,
         "functions": 58.33,
-        "lines": 72.73,
-        "statements": 72
+        "lines": 70.83,
+        "statements": 70.83
       }
     }
   }

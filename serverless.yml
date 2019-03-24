@@ -5,7 +5,8 @@ frameworkVersion: '>=1.0.0 <2.0.0'
 custom:
   account: ${opt:account}
   region: ${opt:region}
-  bucket: ${opt:bucket}
+  flickrkey: ${opt:flickrkey}
+  flickrlimit: ${opt:flickrlimit}
   timeout: ${opt:timeout}
   rate: ${opt:rate}
   debug: ${opt:debug}
@@ -21,7 +22,8 @@ provider:
   logRetentionInDays: 7
   environment:
     ACCOUNT: ${self:custom.account}
-    BUCKET: ${self:custom.bucket}
+    FLICKRKEY: ${self:custom.flickrkey}
+    FLICKRLIMIT: ${self:custom.flickrlimit}
     TIMEOUT: ${self:custom.timeout}
     RATE: ${self:custom.rate}
     DEBUG: ${self:custom.debug}
@@ -39,6 +41,10 @@ provider:
         - 's3:*'
       Resource:
         - arn:aws:s3:::scenicroutes-*
+    - Effect: 'Allow'
+      Action:
+        - 'sqs:*'
+      Resource: arn:aws:sqs:${self:custom.region}:*:*
 functions:
   scheduler:
     handler: build/scheduler.main
@@ -47,10 +53,15 @@ functions:
           name: scheduler-event
           description: 'Event to fire the scheduler service'
           rate: rate(${self:custom.rate} minutes)
+  consumer:
+    handler: build/consumer.main
+    events:
+      - sqs:
+          arn: arn:aws:sqs:${self:custom.region}:${self:custom.account}:job-scheduling
+          batchSize: 10
 
 resources:
-  - ${file(config/dynamodb-job.json)}
-  - ${file(config/dynamodb-area.json)}
+  - ${file(config/sqs-job.json)}
 
 plugins:
   - serverless-prune-plugin

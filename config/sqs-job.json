@@ -1,0 +1,11 @@
+{
+  "Resources": {
+    "JobQueueSQS": {
+      "Type": "AWS::SQS::Queue",
+      "Properties": {
+        "QueueName": "job-scheduling",
+        "VisibilityTimeout": 60
+      }
+    }
+  }
+}

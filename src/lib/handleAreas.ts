@@ -1,13 +1,9 @@
 // Packages.
-import * as AWS from 'aws-sdk';
+import * as _ from 'lodash';
 import * as debug from 'debug';
-import { DynamoDbDriver } from '@scenicroutes/eratosthenes';
-// import * as turf from '@turf/turf';
+// import { Eratosthenes } from '@scenicroutes/eratosthenes';
 
 // Internal.
-import { AREA_REFRESH_RATE } from '../constants';
-import { generateZones } from './generateZones';
-import * as Types from '../types';
 
 // Code.
 // const debugError = debug('cartier:error:handleAreas');
@@ -18,44 +14,14 @@ export const handleAreas = async (
 ): Promise<{ jobsSent: number; jobsScheduled: number }> => {
   debugVerbose(`jobsRemaining: %j`, jobsRemaining);
 
-  // Retrieve areas from DynamoDB
-  const scanRequest: AWS.DynamoDB.DocumentClient.ScanInput = {
-    TableName: 'area',
-  };
+  // Get zones from DynamoDB
+  // const zones
 
-  // TODO: scan only for enabled areas
+  // Send first jobs remaining zones to job scheduler and await response
 
-  const scanResponse = await DynamoDbDriver.scan<Types.Area>(scanRequest);
-  debugVerbose(`scan response: %j`, scanResponse);
+  // Send the others as jobs with page 0
 
-  if (!scanResponse.Items) {
-    return { jobsSent: 0, jobsScheduled: 0 };
-  }
+  // Send the responses
 
-  const now = Date.now();
-
-  // If last update time > AREA_REFRESH_RATE, schedule area
-  const areas = scanResponse.Items.filter(
-    area => now - area.lastScheduledAt > AREA_REFRESH_RATE
-  );
-  debugVerbose(`areas to schedule: %j`, areas);
-
-  if (!areas.length) {
-    return { jobsSent: 0, jobsScheduled: 0 };
-  }
-
-  const dividedAreas = await Promise.all(
-    areas.map(async area => await generateZones(area))
-  );
-
-  debugVerbose(`divided areas: %j`, dividedAreas);
-
-  // update dynamo db for date (not for nulls)
-
-  // Request to know the number of pages and send jobs
-  // If only one page, handled directly by consumer
-  // Actually save requests by always using first page
-
-  // Store any excess to dynamodb
   return { jobsSent: 0, jobsScheduled: 0 };
 };

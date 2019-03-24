@@ -2,7 +2,7 @@
 import { FLICKR_API_LIMIT } from './constants';
 import { main as scheduler } from './scheduler';
 import * as areas from './lib/handleAreas';
-import * as jobs from './lib/handlePendingJobs';
+import * as jobs from './lib/schedulePendingJobs';
 
 // Code.
 describe('scheduler', () => {
@@ -17,7 +17,7 @@ describe('scheduler', () => {
         jobsScheduled: x / 2,
       }));
     const handlePendingJobsSpy = jest
-      .spyOn(jobs, 'handlePendingJobs')
+      .spyOn(jobs, 'schedulePendingJobs')
       .mockImplementation(async () => 0);
 
     await scheduler(
@@ -34,7 +34,7 @@ describe('scheduler', () => {
     );
   });
   it('should catch errors', async () => {
-    jest.spyOn(jobs, 'handlePendingJobs').mockImplementation(async () => {
+    jest.spyOn(jobs, 'schedulePendingJobs').mockImplementation(async () => {
       throw Error('test_error');
     });
 

@@ -1,4 +1,4 @@
-export const handlePendingJobs = async (
+export const schedulePendingJobs = async (
   jobsRemaining: number
 ): Promise<number> => {
   // TODO: handle pending jobs

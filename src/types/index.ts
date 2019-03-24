@@ -1,5 +1,5 @@
 // Packages.
-import * as turf from '@turf/turf';
+import * as turfHelpers from '@turf/helpers';
 
 // Definition.
 export type Result<T, E> = {
@@ -7,15 +7,14 @@ export type Result<T, E> = {
   readonly err: E;
 };
 
-export type Area = {
-  readonly id: string;
-  readonly name: string;
-  readonly file: string;
-  readonly enabled: boolean;
-  readonly lastScheduledAt: number;
+export type SearchOptions = {
+  bbox: turfHelpers.BBox;
+  min_upload_date: number;
+  max_upload_date: number;
+  page: number;
 };
 
-export type Zone = {
-  bbox: turf.helpers.BBox;
-  zone: turf.helpers.Feature<turf.helpers.Polygon>;
+export type PhotoProperties = {
+  zoneId: string;
+  inside: boolean;
 };

@@ -41,6 +41,10 @@ provider:
         - 's3:*'
       Resource:
         - arn:aws:s3:::scenicroutes-*
+    - Effect: 'Allow'
+      Action:
+        - 'sqs:*'
+      Resource: arn:aws:sqs:${self:custom.region}:*:*
 functions:
   scheduler:
     handler: build/scheduler.main

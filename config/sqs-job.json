@@ -3,7 +3,8 @@
     "JobQueueSQS": {
       "Type": "AWS::SQS::Queue",
       "Properties": {
-        "QueueName": "job-scheduling"
+        "QueueName": "job-scheduling",
+        "VisibilityTimeout": 60
       }
     }
   }

@@ -1,5 +1,5 @@
 // Internal.
-import { schedulePendingJobs } from './schedulePendingJobs';
+import { schedulePendingJobs } from './scheduleJobs';
 
 // Code.
 describe('schedulePendingJobs', () => {

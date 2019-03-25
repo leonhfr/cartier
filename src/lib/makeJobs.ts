@@ -4,6 +4,7 @@ import * as debug from 'debug';
 // import { Eratosthenes } from '@scenicroutes/eratosthenes';
 
 // Internal.
+// import { handleJob } from './handleJob';
 
 // Code.
 // const debugError = debug('cartier:error:handleAreas');
@@ -14,6 +15,7 @@ export const handleAreas = async (
 ): Promise<{ jobsSent: number; jobsScheduled: number }> => {
   debugVerbose(`jobsRemaining: %j`, jobsRemaining);
 
+  // const zones = await Eratosthenes.ZoneModel
   // Get zones from DynamoDB
   // const zones
 

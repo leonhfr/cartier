@@ -1,5 +1,5 @@
 // Internal.
-import { handleAreas } from './handleAreas';
+import { handleAreas } from './makeJobs';
 
 // Code.
 describe('handleAreas', () => {

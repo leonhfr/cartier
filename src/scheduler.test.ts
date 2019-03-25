@@ -1,8 +1,8 @@
 // Internal.
 import { FLICKR_API_LIMIT } from './constants';
 import { main as scheduler } from './scheduler';
-import * as areas from './lib/handleAreas';
-import * as jobs from './lib/schedulePendingJobs';
+import * as areas from './lib/makeJobs';
+import * as jobs from './lib/scheduleJobs';
 
 // Code.
 describe('scheduler', () => {

@@ -5,8 +5,8 @@ import * as debug from 'debug';
 // Internal.
 import Config from './lib/Config';
 import { FLICKR_API_LIMIT } from './constants';
-import { handleAreas } from './lib/handleAreas';
-import { schedulePendingJobs } from './lib/schedulePendingJobs';
+import { handleAreas } from './lib/makeJobs';
+import { schedulePendingJobs } from './lib/scheduleJobs';
 
 // Code.
 const debugError = debug('cartier:error:scheduler');

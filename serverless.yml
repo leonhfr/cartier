@@ -22,6 +22,7 @@ provider:
   logRetentionInDays: 7
   environment:
     ACCOUNT: ${self:custom.account}
+    REGION: ${self:custom.region}
     FLICKRKEY: ${self:custom.flickrkey}
     FLICKRLIMIT: ${self:custom.flickrlimit}
     TIMEOUT: ${self:custom.timeout}
@@ -55,6 +56,7 @@ functions:
           rate: rate(${self:custom.rate} minutes)
   consumer:
     handler: build/consumer.main
+    reservedConcurrency: 1
     events:
       - sqs:
           arn: arn:aws:sqs:${self:custom.region}:${self:custom.account}:job-scheduling

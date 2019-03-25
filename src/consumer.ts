@@ -1,6 +1,7 @@
 // Packages.
 import * as AWSLambda from 'aws-lambda';
 import * as debug from 'debug';
+// import { Eratosthenes } from '@scenicroutes/eratosthenes';
 
 // Internal.
 
@@ -16,6 +17,8 @@ export const main = async (
   try {
     debugVerbose(`event: %j`, event);
     debugVerbose(`context: %j`, context);
+
+    // const { ok, err } = Eratosthenes.JobModel.consume(event);
 
     return callback(undefined, 'Done');
   } catch (err) {

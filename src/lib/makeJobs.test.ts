@@ -1,9 +1,9 @@
 // Internal.
-import { handleAreas } from './makeJobs';
+import { makeJobs } from './makeJobs';
 
 // Code.
-describe('handleAreas', () => {
+describe('makeJobs', () => {
   it('should be defined', () => {
-    expect(handleAreas).toBeDefined();
+    expect(makeJobs).toBeDefined();
   });
 });

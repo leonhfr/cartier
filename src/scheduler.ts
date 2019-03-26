@@ -5,8 +5,13 @@ import * as debug from 'debug';
 // Internal.
 import Config from './lib/Config';
 import { FLICKR_API_LIMIT } from './constants';
-// import { handleAreas } from './lib/makeJobs';
-// import { scheduleJobs } from './lib/scheduleJobs';
+import { fetchAreas } from './lib/fetchAreas';
+import { fetchJobs } from './lib/fetchJobs';
+import { fetchZones } from './lib/fetchZones';
+import { makeJobs } from './lib/makeJobs';
+import { postponeJobs } from './lib/postponeJobs';
+import { scheduleJobs } from './lib/scheduleJobs';
+import * as Types from './types';
 
 // Code.
 const debugError = debug('cartier:error:scheduler');
@@ -26,19 +31,56 @@ export const main = async (
 
     debugVerbose(`API limit: %d jobs`, maximumJobs);
 
-    // If there are pending jobs, we schedule them first
-    // const pendingJobsScheduled = await schedulePendingJobs(maximumJobs);
-    // debugVerbose(`%d pending jobs sent`, pendingJobsScheduled);
+    // We fetch any pending jobs
+    const pendingJobs = await fetchJobs(maximumJobs);
+    debugVerbose(`pending jobs: %o`, pendingJobs);
 
-    // Otherwise, proceed to handling the areas
-    // const { jobsSent, jobsScheduled } = await handleAreas(
-    //   maximumJobs - pendingJobsScheduled
-    // );
-    // debugVerbose(
-    //   `%d jobs sent, %d pending jobs scheduled`,
-    //   jobsSent,
-    //   jobsScheduled
-    // );
+    // If there are pending jobs, we schedule them first
+    if (pendingJobs.length) {
+      const scheduleResponse = await scheduleJobs(pendingJobs);
+      debugVerbose(`schedule response: %o`, scheduleResponse);
+    }
+
+    const remainingJobs = maximumJobs - pendingJobs.length;
+
+    // If we can't schedule more jobs, we exit early
+    if (remainingJobs === 0) {
+      debugVerbose(`maximum jobs scheduled, exiting early...`);
+
+      return callback(undefined, 'Done');
+    }
+
+    // We define the time until when to update as now
+    const now = Date.now();
+    debugVerbose(`now: %d`, now);
+
+    // We get the areas that have to be updated
+    const areas = await fetchAreas(now);
+    debugVerbose(`areas: %o`, areas);
+
+    // We get the zones of the areas that have to be updated
+    // We also receive the last time the area was scheduled at
+    const timedZones = await fetchZones(areas);
+    debugVerbose(`timedZones: %o`, timedZones);
+
+    // We generate the jobs
+    const makeJobsInput: Array<Types.MakeJobInput> = timedZones.map(
+      timedZone => ({
+        minUploadDate: timedZone.lastUpdate,
+        maxUploadDate: now,
+        pageFrom: 1,
+        zone: timedZone.zone,
+      })
+    );
+    const jobs = await makeJobs(makeJobsInput);
+    debugVerbose(`jobs: %o`, jobs);
+
+    // We schedule as much as possible, and postpone the rest
+    const jobsToSchedule = jobs.slice(0, remainingJobs);
+    const jobsToPostpone = jobs.slice(remainingJobs);
+
+    await scheduleJobs(jobsToSchedule);
+    await postponeJobs(jobsToPostpone);
 
     return callback(undefined, 'Done');
   } catch (err) {

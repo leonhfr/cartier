@@ -2,28 +2,20 @@
 import * as _ from 'lodash';
 import * as debug from 'debug';
 // import { Eratosthenes } from '@scenicroutes/eratosthenes';
+import * as Wittgenstein from '@scenicroutes/wittgenstein';
 
 // Internal.
 // import { handleJob } from './handleJob';
+import * as Types from '../types';
 
 // Code.
-// const debugError = debug('cartier:error:handleAreas');
-const debugVerbose = debug('cartier:verbose:handleAreas');
+// const debugError = debug('cartier:error:makeJobs');
+const debugVerbose = debug('cartier:verbose:makeJobs');
 
-export const handleAreas = async (
-  jobsRemaining: number
-): Promise<{ jobsSent: number; jobsScheduled: number }> => {
-  debugVerbose(`jobsRemaining: %j`, jobsRemaining);
+export const makeJobs = async (
+  jobsInput: Array<Types.MakeJobInput>
+): Promise<Array<Wittgenstein.Job>> => {
+  debugVerbose(`jobsInput: %j`, jobsInput);
 
-  // const zones = await Eratosthenes.ZoneModel
-  // Get zones from DynamoDB
-  // const zones
-
-  // Send first jobs remaining zones to job scheduler and await response
-
-  // Send the others as jobs with page 0
-
-  // Send the responses
-
-  return { jobsSent: 0, jobsScheduled: 0 };
+  return [];
 };

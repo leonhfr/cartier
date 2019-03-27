@@ -60,7 +60,7 @@ functions:
     events:
       - sqs:
           arn: arn:aws:sqs:${self:custom.region}:${self:custom.account}:job-scheduling
-          batchSize: 1
+          batchSize: 4
 
 resources:
   - ${file(config/sqs-job.json)}

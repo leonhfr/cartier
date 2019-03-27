@@ -42,7 +42,7 @@ export const main = async (
         // Putting all photos to DynamoDB
         await handlePhotos(photo, job.zone);
 
-        if (job.page !== 1) {
+        if (job.page !== 1 || pages < 2) {
           return null;
         }
 

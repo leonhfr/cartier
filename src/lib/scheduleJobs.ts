@@ -7,6 +7,7 @@ import * as Wittgenstein from '@scenicroutes/wittgenstein';
 
 // Internal.
 import Config from './Config';
+import { MAXIMUM_BATCH_PUBLISH } from '../constants';
 
 // Code.
 const debugError = debug('cartier:error:scheduleJobs');
@@ -17,7 +18,7 @@ export const scheduleJobs = async (jobs: Array<Wittgenstein.Job>) => {
     Config.account
   }/job-scheduling`;
 
-  const jobChunks = _.chunk(jobs, 10);
+  const jobChunks = _.chunk(jobs, MAXIMUM_BATCH_PUBLISH);
 
   const chunkResponses = await Promise.all(
     jobChunks.map(jobs => Eratosthenes.JobModel.publish(url, jobs))

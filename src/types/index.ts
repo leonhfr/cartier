@@ -28,7 +28,6 @@ export type TimedZone = {
 export type MakeJobInput = {
   minUploadDate: number;
   maxUploadDate: number;
-  pageFrom: number;
-  pageTo?: number;
+  page: number;
   zone: Wittgenstein.Zone;
 };

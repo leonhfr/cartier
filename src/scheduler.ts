@@ -68,11 +68,11 @@ export const main = async (
       timedZone => ({
         minUploadDate: timedZone.lastUpdate,
         maxUploadDate: now,
-        pageFrom: 1,
+        page: 1,
         zone: timedZone.zone,
       })
     );
-    const jobs = await makeJobs(makeJobsInput);
+    const jobs = makeJobs(makeJobsInput);
     debugVerbose(`jobs: %o`, jobs);
 
     // We schedule as much as possible, and postpone the rest

@@ -51,7 +51,7 @@ export const main = async (
     }
 
     // We define the time until when to update as now
-    const now = Date.now();
+    const now = Math.floor(Date.now() / 1000);
     debugVerbose(`now: %d`, now);
 
     // We get the areas that have to be updated

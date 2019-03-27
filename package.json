@@ -25,8 +25,8 @@
   },
   "license": "GPL-3.0-only",
   "dependencies": {
-    "@scenicroutes/davinci": "0.0.2",
-    "@scenicroutes/eratosthenes": "0.0.14",
+    "@scenicroutes/davinci": "0.0.6",
+    "@scenicroutes/eratosthenes": "0.0.15",
     "@scenicroutes/wittgenstein": "0.0.6",
     "@turf/boolean-point-in-polygon": "^6.0.1",
     "@turf/helpers": "^6.1.4",

@@ -1,29 +1,36 @@
 // Packages.
 import * as _ from 'lodash';
 import * as debug from 'debug';
-// import { Eratosthenes } from '@scenicroutes/eratosthenes';
+import * as Wittgenstein from '@scenicroutes/wittgenstein';
+import { v4 as uuid } from 'uuid';
 
 // Internal.
-// import { handleJob } from './handleJob';
+import * as Types from '../types';
 
 // Code.
-// const debugError = debug('cartier:error:handleAreas');
-const debugVerbose = debug('cartier:verbose:handleAreas');
+const debugError = debug('cartier:error:makeJobs');
+const debugVerbose = debug('cartier:verbose:makeJobs');
 
-export const handleAreas = async (
-  jobsRemaining: number
-): Promise<{ jobsSent: number; jobsScheduled: number }> => {
-  debugVerbose(`jobsRemaining: %j`, jobsRemaining);
+export const makeJobs = (
+  jobsInput: Array<Types.MakeJobInput>
+): Array<Wittgenstein.Job> => {
+  debugVerbose(`jobsInput: %j`, jobsInput);
 
-  // const zones = await Eratosthenes.ZoneModel
-  // Get zones from DynamoDB
-  // const zones
+  const jobs = jobsInput.map(input =>
+    Wittgenstein.Job.create({
+      id: uuid(),
+      minUploadDate: input.minUploadDate,
+      maxUploadDate: input.maxUploadDate,
+      page: input.page,
+      zone: input.zone,
+    })
+  );
 
-  // Send first jobs remaining zones to job scheduler and await response
-
-  // Send the others as jobs with page 0
-
-  // Send the responses
-
-  return { jobsSent: 0, jobsScheduled: 0 };
+  return jobs.filter(job => {
+    if (job instanceof Error) {
+      debugError(`error creating job: %o,job`);
+      return false;
+    }
+    return true;
+  }) as Array<Wittgenstein.Job>;
 };

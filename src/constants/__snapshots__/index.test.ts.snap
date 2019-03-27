@@ -3,5 +3,6 @@
 exports[`index should expose the expected entries 1`] = `
 Object {
   "FLICKR_API_LIMIT": 100,
+  "MAXIMUM_BATCH_PUBLISH": 10,
 }
 `;

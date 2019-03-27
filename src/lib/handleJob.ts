@@ -5,7 +5,6 @@ import * as Wittgenstein from '@scenicroutes/wittgenstein';
 
 // Internal.
 import Config from './Config';
-import { handlePhotos } from './handlePhotos';
 import * as Types from '../types';
 
 // Code.
@@ -35,16 +34,5 @@ export const handleJob = async (job: Wittgenstein.Job) => {
 
   debugVerbose(`API answered with %o`, flickrResponse);
 
-  if (flickrResponse instanceof Error) {
-    return flickrResponse;
-  }
-
-  const { page, pages, photo, total } = flickrResponse;
-
-  // Putting all photos to DynamoDB
-  await handlePhotos(photo, job.zone);
-
-  // We return the number of pages
-  // That way we can use it to schedule further jobs
-  return { page, pages, photo: photo.length, total };
+  return flickrResponse;
 };

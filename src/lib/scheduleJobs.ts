@@ -3,37 +3,30 @@ import * as AWS from 'aws-sdk';
 import * as _ from 'lodash';
 import * as debug from 'debug';
 import { Eratosthenes } from '@scenicroutes/eratosthenes';
+import * as Wittgenstein from '@scenicroutes/wittgenstein';
 
 // Internal.
 import Config from './Config';
+import { MAXIMUM_BATCH_PUBLISH } from '../constants';
 
 // Code.
-const debugError = debug('cartier:error:fetchAreas');
-// const debugVerbose = debug('cartier:verbose:fetchAreas');
+const debugError = debug('cartier:error:scheduleJobs');
+const debugVerbose = debug('cartier:verbose:scheduleJobs');
 
-export const schedulePendingJobs = async (
-  maximumJobs: number
-): Promise<number> => {
-  const errors: Array<Error> = [];
-
-  const jobs = await Eratosthenes.JobModel.list(maximumJobs);
-
-  if (jobs instanceof Error) {
-    throw jobs;
-  }
-
-  errors.push(...jobs.err);
-
-  const jobChunks = _.chunk(jobs.ok, 10);
-
+export const scheduleJobs = async (jobs: Array<Wittgenstein.Job>) => {
   const url = `https://sqs.${Config.region}.amazonaws.com/${
     Config.account
   }/job-scheduling`;
+
+  const jobChunks = _.chunk(jobs, MAXIMUM_BATCH_PUBLISH);
 
   const chunkResponses = await Promise.all(
     jobChunks.map(jobs => Eratosthenes.JobModel.publish(url, jobs))
   );
 
+  debugVerbose(`chunkResponses: %o`, chunkResponses);
+
+  const errors: Array<Error> = [];
   const batchErrors: Array<AWS.SQS.BatchResultErrorEntry> = [];
   const batchResults: Array<AWS.SQS.SendMessageBatchResultEntry> = [];
 
@@ -57,20 +50,9 @@ export const schedulePendingJobs = async (
     )
   );
 
-  const deleteResults = await Promise.all(
-    batchResults.map(result => Eratosthenes.JobModel.delete(result.Id))
-  );
-
-  const deleteErrors = _.filter(
-    deleteResults,
-    result => result instanceof Error
-  ) as Array<Error>;
-
-  errors.push(...deleteErrors);
-
   for (const error of errors) {
     debugError(`Error: %o`, error);
   }
 
-  return batchResults.length;
+  return batchResults;
 };

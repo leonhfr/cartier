@@ -10,7 +10,9 @@ import * as Wittgenstein from '@scenicroutes/wittgenstein';
 const debugError = debug('cartier:error:fetchAreas');
 const debugVerbose = debug('cartier:verbose:fetchAreas');
 
-export const fetchAreas = async (): Promise<Array<Wittgenstein.Area>> => {
+export const fetchAreas = async (
+  now: number
+): Promise<Array<Wittgenstein.Area>> => {
   // Retrieve areas from DynamoDB
   const areasList = await Eratosthenes.AreaModel.list();
 
@@ -19,8 +21,6 @@ export const fetchAreas = async (): Promise<Array<Wittgenstein.Area>> => {
   if (areasList instanceof Error) {
     throw areasList;
   }
-
-  const now = Date.now();
 
   const areas = _.filter(
     areasList.ok,

@@ -1,10 +1,10 @@
 // Internal.
-import { schedulePendingJobs } from './scheduleJobs';
+import { scheduleJobs } from './scheduleJobs';
 
 // Code.
 describe('schedulePendingJobs', () => {
   it('should be defined', async () => {
-    expect(schedulePendingJobs).toBeDefined();
+    expect(scheduleJobs).toBeDefined();
   });
   it('should return the number of jobs jobsRemaining', async () => {
     // const result = await schedulePendingJobs(0);

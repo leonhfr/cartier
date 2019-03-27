@@ -1,4 +1,5 @@
 // Packages.
+import * as Wittgenstein from '@scenicroutes/wittgenstein';
 import * as turfHelpers from '@turf/helpers';
 
 // Definition.
@@ -17,4 +18,16 @@ export type SearchOptions = {
 export type PhotoProperties = {
   zoneId: string;
   inside: boolean;
+};
+
+export type TimedZone = {
+  lastUpdate: number;
+  zone: Wittgenstein.Zone;
+};
+
+export type MakeJobInput = {
+  minUploadDate: number;
+  maxUploadDate: number;
+  page: number;
+  zone: Wittgenstein.Zone;
 };
